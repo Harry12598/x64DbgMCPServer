@@ -118,9 +118,9 @@ namespace DotNetPlugin
                 Width = 375,
                 Height = 60,
                 Text = "Notes:\n" +
-                       "• Use '+' or '*' to listen on all interfaces (requires admin or urlacl)\n" +
-                       "• Use '127.0.0.1' or 'localhost' for local-only access\n" +
-                       "• Restart the MCP server after changing settings",
+                       "â€¢ Use '+' or '*' to listen on all interfaces (requires admin or urlacl)\n" +
+                       "â€¢ Use '127.0.0.1' or 'localhost' for local-only access\n" +
+                       "â€¢ Restart the MCP server after changing settings",
                 ForeColor = Color.DimGray,
                 Font = new Font(Font.FontFamily, 8)
             };
@@ -175,7 +175,7 @@ namespace DotNetPlugin
             if (!McpServerConfig.IsValidIpAddress(txtIpAddress.Text.Trim()))
             {
                 MessageBox.Show(
-                    "Invalid IP address format.\n\nValid values:\n• + (all interfaces)\n• * (all interfaces)\n• localhost\n• A valid IP address (e.g., 127.0.0.1, 192.168.1.100)",
+                    "Invalid IP address format.\n\nValid values:\n- + (all interfaces)\n- * (all interfaces)\n- localhost\n- A valid IP address (e.g., 127.0.0.1, 192.168.1.100)",
                     "Validation Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
