@@ -79,6 +79,7 @@ namespace DotNetPlugin
                 Width = 80,
                 TextAlign = ContentAlignment.MiddleRight
             };
+            Controls.Add(lblPort);
 
             // Port NumericUpDown
             numPort = new NumericUpDown
@@ -101,6 +102,7 @@ namespace DotNetPlugin
                 Width = 80,
                 TextAlign = ContentAlignment.MiddleRight
             };
+            Controls.Add(lblUrlTitle);
 
             lblCurrentUrl = new Label
             {
@@ -153,9 +155,9 @@ namespace DotNetPlugin
             // Add controls
             Controls.AddRange(new Control[]
             {
-                lblIp, txtIpAddress, lblIpHelp,
-                lblPort, numPort,
-                lblUrlTitle, lblCurrentUrl,
+                txtIpAddress,
+                numPort,
+                lblCurrentUrl,
                 lblHelp,
                 btnSave, btnCancel
             });
