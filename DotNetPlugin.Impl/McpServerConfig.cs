@@ -44,7 +44,7 @@ namespace DotNetPlugin
         /// </summary>
         public string GetDisplayUrl()
         {
-            string displayIp = IpAddress == "+" ? "127.0.0.1" : IpAddress;
+            string displayIp = (IpAddress == "+" || IpAddress == "*") ? "127.0.0.1" : IpAddress;
             return $"http://{displayIp}:{Port}/sse";
         }
 
