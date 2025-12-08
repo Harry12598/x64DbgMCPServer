@@ -18,29 +18,6 @@ This plugin creates a lightweight HTTP bridge between MCP clients and the x64dbg
 
 ---
 
-## Table of Contents
-
-- [MCP Client Configuration](#mcp-client-configuration)
-  - [Cursor](#cursor)
-  - [Claude Desktop](#claude-desktop)
-  - [Windsurf](#windsurf)
-- [Sample MCP Client](#sample-mcp-client)
-- [Sample Conversations](#sample-conversations)
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Building from Source](#building-from-source)
-  - [Installing the Plugin](#installing-the-plugin)
-- [Usage](#usage)
-  - [Starting the Server](#starting-the-server)
-  - [Available Commands](#available-commands)
-- [Troubleshooting](#troubleshooting)
-- [Development](#development)
-- [How It Works](#how-it-works)
-- [Known Issues](#known-issues)
-- [Acknowledgments](#acknowledgments)
-
----
-
 ## MCP Client Configuration
 
 ### Cursor
