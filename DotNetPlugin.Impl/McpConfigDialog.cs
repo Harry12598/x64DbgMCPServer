@@ -46,6 +46,7 @@ namespace DotNetPlugin
                 Width = 80,
                 TextAlign = ContentAlignment.MiddleRight
             };
+            Controls.Add(lblIp);
 
             // IP Address TextBox
             txtIpAddress = new TextBox
@@ -67,6 +68,7 @@ namespace DotNetPlugin
                 ForeColor = Color.Gray,
                 Font = new Font(Font.FontFamily, 8)
             };
+            Controls.Add(lblIpHelp);
 
             // Port Label
             var lblPort = new Label
