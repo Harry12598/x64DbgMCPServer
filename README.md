@@ -93,7 +93,7 @@ Need a client to get started? Download the sample client:
 1. Open the project in Visual Studio
 2. Edit `Program.cs` line 590: Enter your Google Cloud API Gemini key
 3. Edit `Program.cs` line 615: Set your MCP server IP (e.g., `http://192.168.x.x:50300/sse`)
-4. Open x64dbg—the server will load automatically
+4. Open x64dbg, then start the MCP server manually via the Plugins menu before running the client
 5. (Optional) To interact manually instead of using AI, uncomment line 634 and comment out line 635
 6. Run the client—the AI will execute the prompt on line 434
 
