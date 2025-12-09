@@ -187,18 +187,54 @@ Single-shot speed hack detection:
 
 ### Available Commands
 
+The following MCP tools are available for AI-assisted debugging and reverse engineering:
+
+#### Core Debugger Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
-| `ExecuteDebuggerCommand` | Run any x64dbg command | `command=init C:\app.exe` |
-| `ReadDismAtAddress` | Disassemble at address | `address=0x14000153f, byteCount=100` |
-| `ReadMemAtAddress` | Read memory bytes | `address=0x7FFA1AC81000, byteCount=5` |
-| `WriteMemToAddress` | Write bytes to memory | `address=0x14000153f, byteString=90 90 90` |
-| `CommentOrLabelAtAddress` | Add comment or label | `address=0x14000153f, value=Main, mode=Label` |
-| `GetAllRegisters` | Get all register values | — |
-| `GetLabel` | Get label at address | `address=0x14000153f` |
-| `GetAllActiveThreads` | List all threads | — |
-| `GetAllModulesFromMemMap` | List loaded modules | — |
-| `GetCallStack` | Get current call stack | — |
+| `ExecuteDebuggerCommand` | Execute any x64dbg command synchronously | `command=init c:\Path\To\Program.exe` |
+| `ExecuteDebuggerCommandWithVar` | Execute a command and return a debugger variable | `command=init notepad.exe, resultVar=$pid, pollMs=100, pollTimeoutMs=5000` |
+| `ExecuteDebuggerCommandWithOutput` | Execute a command and capture log output | `command="bplist"` |
+| `ListDebuggerCommands` | List available debugger commands by category | `subject=gui` (options: debugcontrol, gui, search, threadcontrol) |
+| `DbgValFromString` | Get a debugger variable/expression value | `value=$pid` |
+
+#### Memory Operations (Debug Session Required)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `ReadDismAtAddress` | Disassemble instructions at an address | `address=0x12345678, byteCount=100` |
+| `WriteMemToAddress` | Write bytes to a memory address | `address=0x12345678, byteString=0F FF 90` |
+
+#### Labels and Comments (Debug Session Required)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `GetLabel` | Get the label at a specific address | `addressStr=0x12345678` |
+| `CommentOrLabelAtAddress` | Add a label or comment at an address | `address=0x12345678, value=MyFunction, mode=Label` |
+
+#### Process Information (Debug Session Required)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `GetAllRegisters` | Get all CPU register values | — |
+| `GetAllActiveThreads` | List all active threads with details | — |
+| `GetAllModulesFromMemMap` | List all loaded modules from memory map | — |
+| `GetCallStack` | Get the current call stack | `maxFrames=32` |
+
+#### Breakpoints (Debug Session Required)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `GetBreakpointInfo` | Get breakpoint information using safe methods | — |
+
+#### File Operations (Debug Session Required)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `DumpModuleToFile` | Dump module info and disassembly to a file | `pfilepath=C:\Output.txt` |
+
+> **Note:** Commands marked "Debug Session Required" only work when x64dbg is actively debugging a process.
 
 #### Advanced Commands
 
