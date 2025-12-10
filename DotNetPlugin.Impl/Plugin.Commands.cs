@@ -88,24 +88,73 @@ namespace DotNetPlugin
         static SimpleMcpServer GSimpleMcpServer;
         static McpServerConfig GMcpServerConfig;
 
+        /// <summary>
+        /// Checks if the MCP server is currently running.
+        /// </summary>
+        public static bool IsMcpServerRunning()
+        {
+            return GSimpleMcpServer != null;
+        }
+
         [Command("StartMCPServer", DebugOnly = false)]
         public static void cbStartMCPServer(string[] args)
         {
+            if (IsMcpServerRunning())
+            {
+                Console.WriteLine("MCP Server is already running.");
+                return;
+            }
+            
             Console.WriteLine("Starting MCPServer");
-            GMcpServerConfig = McpServerConfig.Load();
+            if (GMcpServerConfig == null)
+                GMcpServerConfig = new McpServerConfig();
             GSimpleMcpServer = new SimpleMcpServer(typeof(DotNetPlugin.Plugin), GMcpServerConfig);
             GSimpleMcpServer.Start();
             Console.WriteLine("MCPServer Started");
             Console.WriteLine($"MCP Server URL: {GMcpServerConfig.GetDisplayUrl()}");
+            
+            // Update menu state
+            UpdateMcpMenuState();
         }
 
         [Command("StopMCPServer", DebugOnly = false)]
         public static void cbStopMCPServer(string[] args)
         {
+            if (!IsMcpServerRunning())
+            {
+                Console.WriteLine("MCP Server is not running.");
+                return;
+            }
+            
             Console.WriteLine("Stopping MCPServer");
             GSimpleMcpServer.Stop();
             GSimpleMcpServer = null;
             Console.WriteLine("MCPServer Stopped");
+            
+            // Update menu state
+            UpdateMcpMenuState();
+        }
+
+        [Command("RestartMCPServer", DebugOnly = false)]
+        public static void cbRestartMCPServer(string[] args)
+        {
+            Console.WriteLine("Restarting MCPServer");
+            
+            if (IsMcpServerRunning())
+            {
+                GSimpleMcpServer.Stop();
+                GSimpleMcpServer = null;
+            }
+            
+            if (GMcpServerConfig == null)
+                GMcpServerConfig = new McpServerConfig();
+            GSimpleMcpServer = new SimpleMcpServer(typeof(DotNetPlugin.Plugin), GMcpServerConfig);
+            GSimpleMcpServer.Start();
+            Console.WriteLine("MCPServer Restarted");
+            Console.WriteLine($"MCP Server URL: {GMcpServerConfig.GetDisplayUrl()}");
+            
+            // Update menu state
+            UpdateMcpMenuState();
         }
 
         /// <summary>
@@ -114,18 +163,23 @@ namespace DotNetPlugin
         public static McpServerConfig GetMcpServerConfig()
         {
             if (GMcpServerConfig == null)
-                GMcpServerConfig = McpServerConfig.Load();
+                GMcpServerConfig = new McpServerConfig();
             return GMcpServerConfig;
         }
 
         /// <summary>
-        /// Sets and saves the MCP server configuration.
+        /// Sets the MCP server configuration (in-memory only, not persisted).
         /// </summary>
         public static void SetMcpServerConfig(McpServerConfig config)
         {
             GMcpServerConfig = config;
-            config.Save();
         }
+
+        /// <summary>
+        /// Updates the menu items to reflect current server state.
+        /// This is called from Plugin.Menus.cs
+        /// </summary>
+        public static Action UpdateMcpMenuState { get; set; } = () => { };
 
         /// <summary>
         /// Executes a debugger command synchronously using x64dbg's command engine.

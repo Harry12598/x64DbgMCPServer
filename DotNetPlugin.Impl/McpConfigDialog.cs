@@ -7,12 +7,13 @@ namespace DotNetPlugin
     /// <summary>
     /// Configuration dialog for the MCP server settings.
     /// Allows users to configure the IP address and port for the HTTP listener.
+    /// Settings are stored in-memory only and reset when x64dbg restarts.
     /// </summary>
     public class McpConfigDialog : Form
     {
         private TextBox txtIpAddress;
         private NumericUpDown numPort;
-        private Button btnSave;
+        private Button btnApply;
         private Button btnCancel;
         private Label lblHelp;
         private Label lblCurrentUrl;
@@ -31,7 +32,7 @@ namespace DotNetPlugin
             // Form settings
             Text = "MCP Server Configuration";
             Width = 420;
-            Height = 280;
+            Height = 300;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
@@ -46,7 +47,6 @@ namespace DotNetPlugin
                 Width = 80,
                 TextAlign = ContentAlignment.MiddleRight
             };
-            Controls.Add(lblIp);
 
             // IP Address TextBox
             txtIpAddress = new TextBox
@@ -68,7 +68,6 @@ namespace DotNetPlugin
                 ForeColor = Color.Gray,
                 Font = new Font(Font.FontFamily, 8)
             };
-            Controls.Add(lblIpHelp);
 
             // Port Label
             var lblPort = new Label
@@ -120,33 +119,34 @@ namespace DotNetPlugin
                 Left = 15,
                 Top = 125,
                 Width = 375,
-                Height = 60,
+                Height = 75,
                 Text = "Notes:\n" +
                        "• Use '+' or '*' to listen on all interfaces (requires admin or urlacl)\n" +
                        "• Use '127.0.0.1' or 'localhost' for local-only access\n" +
-                       "• Restart the MCP server after changing settings",
+                       "• Restart the MCP server for changes to take effect\n" +
+                       "• Settings are not saved and will reset when x64dbg restarts",
                 ForeColor = Color.DimGray,
                 Font = new Font(Font.FontFamily, 8)
             };
 
-            // Save Button
-            btnSave = new Button
+            // Apply Button
+            btnApply = new Button
             {
-                Text = "Save",
+                Text = "Apply",
                 Left = 210,
-                Top = 195,
+                Top = 210,
                 Width = 85,
                 Height = 30,
                 DialogResult = DialogResult.OK
             };
-            btnSave.Click += BtnSave_Click;
+            btnApply.Click += BtnApply_Click;
 
             // Cancel Button
             btnCancel = new Button
             {
                 Text = "Cancel",
                 Left = 305,
-                Top = 195,
+                Top = 210,
                 Width = 85,
                 Height = 30,
                 DialogResult = DialogResult.Cancel
@@ -159,10 +159,10 @@ namespace DotNetPlugin
                 numPort,
                 lblCurrentUrl,
                 lblHelp,
-                btnSave, btnCancel
+                btnApply, btnCancel
             });
 
-            AcceptButton = btnSave;
+            AcceptButton = btnApply;
             CancelButton = btnCancel;
         }
 
@@ -173,13 +173,13 @@ namespace DotNetPlugin
             lblCurrentUrl.Text = $"http://{displayIp}:{(int)numPort.Value}/sse";
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private void BtnApply_Click(object sender, EventArgs e)
         {
             // Validate IP address
             if (!McpServerConfig.IsValidIpAddress(txtIpAddress.Text.Trim()))
             {
                 MessageBox.Show(
-                    "Invalid IP address format.\n\nValid values:\n- + (all interfaces)\n- * (all interfaces)\n- localhost\n- A valid IP address (e.g., 127.0.0.1, 192.168.1.100)",
+                    "Invalid IP address format.\n\nValid values:\n• + (all interfaces)\n• * (all interfaces)\n• localhost\n• A valid IP address (e.g., 127.0.0.1, 192.168.1.100)",
                     "Validation Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);

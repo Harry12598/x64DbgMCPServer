@@ -27,7 +27,7 @@ namespace DotNetPlugin
             set { /* accept assignments from event callbacks; actual state comes from Bridge */ }
         }
 
-        public SimpleMcpServer(Type commandSourceType) : this(commandSourceType, McpServerConfig.Load())
+        public SimpleMcpServer(Type commandSourceType) : this(commandSourceType, new McpServerConfig())
         {
         }
 
@@ -35,7 +35,7 @@ namespace DotNetPlugin
         {
             //DisableServerHeader(); //Prob not needed
             _targetType = commandSourceType;
-            _config = config ?? McpServerConfig.Load();
+            _config = config ?? new McpServerConfig();
             
             string baseUrl = _config.GetBaseUrl();
             Console.WriteLine($"MCP server listening on {baseUrl}");
